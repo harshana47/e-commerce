@@ -10,6 +10,18 @@ public class ProductDTO {
     private int stock;
     private int categoryId;
 
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", categoryId=" + categoryId +
+                '}';
+    }
+
     public ProductDTO() {
     }
 
@@ -20,6 +32,12 @@ public class ProductDTO {
         this.price = price;
         this.stock = stock;
         this.categoryId = categoryId;
+    }
+
+    public ProductDTO(int productId, String name, BigDecimal price) {
+        this.id = productId;
+        this.name = name;
+        this.price = price;
     }
 
     // Getters and setters

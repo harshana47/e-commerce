@@ -50,7 +50,7 @@
 </nav>
 
 <div class="d-flex justify-content-end p-3">
-    <a href="saveCategory.jsp" class="btn btn-primary">Add New Item</a>
+    <a href="saveCategory.jsp" class="btn btn-primary">Add New Category</a>
 </div>
 <br><br>
 <div class="container">

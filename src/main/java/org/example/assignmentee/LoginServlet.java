@@ -42,18 +42,15 @@ public class LoginServlet extends HttpServlet {
                 String hashedPassword = resultSet.getString("password");
 
                 if (BCrypt.checkpw(password, hashedPassword)) {
-                    // Password matches, set session attributes and redirect to dashboard
                     HttpSession session = request.getSession();
-                    session.setAttribute("userId", userId);
-                    session.setAttribute("username", username);
-                    response.sendRedirect("adminHome.jsp");
+                    session.setAttribute("userId", userId);  // Storing userId in session
+                    session.setAttribute("username", username);  // Storing username in session
+                    response.sendRedirect("productBrowsing");  // Redirect to home page after login
                 } else {
-                    // Invalid password
                     request.setAttribute("errorMessage", "Invalid email or password.");
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
             } else {
-                // User not found
                 request.setAttribute("errorMessage", "Invalid email or password.");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }

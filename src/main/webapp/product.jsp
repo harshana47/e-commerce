@@ -22,7 +22,6 @@
     <a href="addProduct" class="btn btn-success mb-3">Add New Product</a>
 
     <%
-        // Retrieve categories and products
         List<CategoryDTO> categories = (List<CategoryDTO>) request.getAttribute("categories");
         Map<Integer, List<ProductDTO>> productsByCategory = (Map<Integer, List<ProductDTO>>) request.getAttribute("productsByCategory");
 
@@ -34,10 +33,8 @@
 
         <div class="row">
             <%
-                // Get the products for the current category
                 List<ProductDTO> products = productsByCategory.get(category.getId());
                 if (products != null && !products.isEmpty()) {
-                    // Iterate through products and display them as cards
                     for (ProductDTO product : products) {
             %>
             <div class="col-md-3">
@@ -49,7 +46,6 @@
                         <p class="card-text">Price: $<%= product.getPrice() %></p>
                         <p class="card-text">Stock: <%= product.getStock() %></p>
 
-                        <!-- Update and Delete Buttons inside the card -->
                         <a href="updateProduct?id=<%= product.getId() %>" class="btn btn-warning btn-sm">Update</a>
                         <a href="deleteProduct?id=<%= product.getId() %>" class="btn btn-danger btn-sm">Delete</a>
                     </div>

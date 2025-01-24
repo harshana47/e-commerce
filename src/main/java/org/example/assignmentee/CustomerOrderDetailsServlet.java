@@ -52,7 +52,6 @@ public class CustomerOrderDetailsServlet extends HttpServlet {
                 orderDetails.add(orderDetail);
             }
 
-            // Set the order details in the request attribute
             request.setAttribute("orderDetails", orderDetails);
             request.getRequestDispatcher("viewAllOrders.jsp").forward(request, response);
 

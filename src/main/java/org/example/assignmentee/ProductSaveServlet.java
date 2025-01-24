@@ -17,11 +17,6 @@ public class ProductSaveServlet extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/pool")
     private DataSource dataSource;
 
-
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/ecommerce";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "harshima@147";
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Fetch categories from the database
@@ -76,18 +71,16 @@ public class ProductSaveServlet extends HttpServlet {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertProductQuery)) {
 
-            // Set query parameters
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, description);
             preparedStatement.setDouble(3, price);
             preparedStatement.setInt(4, stock);
             preparedStatement.setInt(5, categoryId);
 
-            // Execute the query
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
-                response.sendRedirect("product"); // Redirect to product list
+                response.sendRedirect("product");
             } else {
                 request.setAttribute("error", "Failed to add product.");
                 doGet(request, response); // Reload categories and show form

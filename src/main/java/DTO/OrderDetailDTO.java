@@ -21,6 +21,7 @@ public class OrderDetailDTO {
         this.userId = userId;  // Initialize userId
     }
 
+
     // Getters and Setters
     public int getOrderId() {
         return orderId;
