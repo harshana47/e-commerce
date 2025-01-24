@@ -58,7 +58,8 @@ public class ProductServlet extends HttpServlet {
                             productResultSet.getString("description"),
                             productResultSet.getBigDecimal("price"),
                             productResultSet.getInt("stock"),
-                            productResultSet.getInt("category_id")  // Updated column name
+                            productResultSet.getInt("category_id"),  // Updated column name
+                            productResultSet.getString("image_path") // Fetching the image path from the database
                     );
                     productList.add(product);
                 }

@@ -42,11 +42,11 @@ public class RegisterServlet extends HttpServlet {
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
                 // Registration successful
-                response.sendRedirect("login.jsp?message=Registration successful! Please log in.");
+                response.sendRedirect("http://localhost:8080/Assignment_EE_war_exploded/?message=Registration successful! Please log in.");
             } else {
                 // Registration failed
                 request.setAttribute("errorMessage", "Registration failed. Please try again.");
-                request.getRequestDispatcher("register.jsp").forward(request, response);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
 
         } catch (Exception e) {

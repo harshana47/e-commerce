@@ -39,6 +39,7 @@ public class ProductBrowseServlet extends HttpServlet {
         List<ProductDTO> products = new ArrayList<>();
 
         try (Connection conn = dataSource.getConnection()) {
+            // Fetch categories
             String categoryQuery = "SELECT id, name FROM categories ORDER BY name ASC";
             try (PreparedStatement stmt = conn.prepareStatement(categoryQuery);
                  ResultSet rs = stmt.executeQuery()) {
@@ -49,7 +50,7 @@ public class ProductBrowseServlet extends HttpServlet {
 
             // Fetch products
             StringBuilder productQuery = new StringBuilder(
-                    "SELECT id, name, description, price, stock, category_id FROM products WHERE 1=1 "
+                    "SELECT id, name, description, price, stock, category_id, image_path FROM products WHERE 1=1 "
             );
 
             if (categoryId != null && !categoryId.isEmpty()) {
@@ -82,6 +83,7 @@ public class ProductBrowseServlet extends HttpServlet {
                         product.setPrice(rs.getBigDecimal("price"));
                         product.setStock(rs.getInt("stock"));
                         product.setCategoryId(rs.getInt("category_id"));
+                        product.setImagePath(rs.getString("image_path")); // Set image path
                         products.add(product);
                     }
                 }

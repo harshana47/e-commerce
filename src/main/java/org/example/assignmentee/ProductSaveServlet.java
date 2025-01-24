@@ -7,15 +7,18 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import javax.sql.DataSource;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "ProductSaveServlet", value = "/addProduct")
+@MultipartConfig
 public class ProductSaveServlet extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/pool")
     private DataSource dataSource;
+
+    private static final String UPLOAD_DIR = "images"; // Directory within the project for image storage
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,8 +68,37 @@ public class ProductSaveServlet extends HttpServlet {
             return;
         }
 
+        // Retrieve image part
+        Part imagePart = request.getPart("image");
+        if (imagePart == null || imagePart.getSize() == 0) {
+            request.setAttribute("error", "Product image is required.");
+            doGet(request, response);
+            return;
+        }
+
+        // Save image to local folder
+        String fileName = imagePart.getSubmittedFileName();
+        String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) uploadDir.mkdir(); // Create the directory if it doesn't exist
+
+        String filePath = uploadPath + File.separator + fileName;
+        try (InputStream inputStream = imagePart.getInputStream();
+             FileOutputStream outputStream = new FileOutputStream(filePath)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Failed to save image: " + e.getMessage());
+            doGet(request, response);
+            return;
+        }
+
         // SQL Query for inserting product
-        String insertProductQuery = "INSERT INTO products (name, description, price, stock, category_id) VALUES (?, ?, ?, ?, ?)";
+        String insertProductQuery = "INSERT INTO products (name, description, price, stock, category_id, image_path) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(insertProductQuery)) {
@@ -76,6 +108,7 @@ public class ProductSaveServlet extends HttpServlet {
             preparedStatement.setDouble(3, price);
             preparedStatement.setInt(4, stock);
             preparedStatement.setInt(5, categoryId);
+            preparedStatement.setString(6, UPLOAD_DIR + "/" + fileName); // Save relative path to the database
 
             int rowsAffected = preparedStatement.executeUpdate();
 

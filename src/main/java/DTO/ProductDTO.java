@@ -9,6 +9,7 @@ public class ProductDTO {
     private BigDecimal price;
     private int stock;
     private int categoryId;
+    private String imagePath;
 
     @Override
     public String toString() {
@@ -19,10 +20,21 @@ public class ProductDTO {
                 ", price=" + price +
                 ", stock=" + stock +
                 ", categoryId=" + categoryId +
+                ", imagePath='" + imagePath + '\'' +
                 '}';
     }
 
     public ProductDTO() {
+    }
+
+    public ProductDTO(int id, String name, String description, BigDecimal price, int stock, int categoryId, String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.categoryId = categoryId;
+        this.imagePath = imagePath;
     }
 
     public ProductDTO(int id, String name, String description, BigDecimal price, int stock, int categoryId) {
@@ -38,6 +50,14 @@ public class ProductDTO {
         this.id = productId;
         this.name = name;
         this.price = price;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     // Getters and setters

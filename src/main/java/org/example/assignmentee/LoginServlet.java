@@ -28,6 +28,15 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
+        // Check for admin credentials
+        if ("admin1@gmail.com".equals(email) && "admin123".equals(password)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("userId", 0); // Optionally set a default ID for the admin
+            session.setAttribute("username", "Admin");
+            response.sendRedirect("index"); // Redirect to admin index page
+            return;
+        }
+
         String query = "SELECT id, username, password FROM users WHERE email = ?";
 
         try (Connection connection = dataSource.getConnection();

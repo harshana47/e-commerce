@@ -39,7 +39,20 @@
             %>
             <div class="col-md-3">
                 <div class="card mb-4">
+                    <!-- Display the product image if it exists -->
+                    <%
+                        String imagePath = product.getImagePath();  // Get image path from the product DTO
+                        if (imagePath != null && !imagePath.isEmpty()) {
+                    %>
+                    <img src="<%= imagePath %>" class="card-img-top" alt="<%= product.getName() %>">
+                    <%
+                    } else {
+                    %>
+                    <!-- Fallback image if no image path exists -->
                     <img src="https://via.placeholder.com/150" class="card-img-top" alt="<%= product.getName() %>">
+                    <%
+                        }
+                    %>
                     <div class="card-body">
                         <h5 class="card-title"><%= product.getName() %></h5>
                         <p class="card-text"><%= product.getDescription() %></p>

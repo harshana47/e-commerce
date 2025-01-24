@@ -10,7 +10,7 @@
 <body>
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Add New Product</h1>
-    <form method="post" action="addProduct">
+    <form method="post" action="addProduct" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="name" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="name" name="name" required>
@@ -47,6 +47,10 @@
                 %>
             </select>
         </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Product Image</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+        </div>
         <button type="submit" class="btn btn-success" value="save" name="action">Add Product</button>
         <a href="addProduct" class="btn btn-secondary">Back</a>
     </form>
@@ -54,3 +58,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
+harshima@147
+h
