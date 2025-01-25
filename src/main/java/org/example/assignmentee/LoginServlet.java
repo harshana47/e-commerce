@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 
                 if (BCrypt.checkpw(password, hashedPassword)) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("userId", userId);  // Storing userId in session
+                    session.setAttribute("userId", userId);
                     session.setAttribute("username", username);  // Storing username in session
                     response.sendRedirect("productBrowsing");  // Redirect to home page after login
                 } else {
