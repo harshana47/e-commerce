@@ -9,9 +9,11 @@
     <title>Place Order</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- SweetAlert2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.0/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.0/dist/sweetalert2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     <style>
         body {
             padding: 20px;
@@ -72,24 +74,29 @@
         </div>
     </form>
     <script type="text/javascript">
-        <% if (request.getAttribute("orderPlaced") != null && (Boolean) request.getAttribute("orderPlaced")) { %>
-        Swal.fire({
-            title: 'Order Placed Successfully!',
-            text: 'Your order has been successfully placed and is pending.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        });
-        <% } %>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check if the order was placed successfully
+            <% if (request.getAttribute("orderPlaced") != null && (Boolean) request.getAttribute("orderPlaced")) { %>
+            Swal.fire({
+                title: 'Order Placed Successfully!',
+                text: 'Your order has been successfully placed and is pending.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+            <% } %>
 
-        <% if (request.getAttribute("orderFailed") != null && (Boolean) request.getAttribute("orderFailed")) { %>
-        Swal.fire({
-            title: 'Oops!',
-            text: 'An error occurred while processing your order. Please try again.',
-            icon: 'error',
-            confirmButtonText: 'OK'
+            // Check if the order failed
+            <% if (request.getAttribute("orderFailed") != null && (Boolean) request.getAttribute("orderFailed")) { %>
+            Swal.fire({
+                title: 'Oops!',
+                text: 'An error occurred while processing your order. Please try again.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            <% } %>
         });
-        <% } %>
     </script>
+
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

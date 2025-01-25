@@ -69,71 +69,60 @@ public class PlaceOrderServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("POST request received for /placeOrder");
+        boolean orderPlaced = false;
 
-        // Get the user's session
         HttpSession session = request.getSession();
         List<CartDTO> cartItems = (List<CartDTO>) session.getAttribute("cart");
 
-        // If cart is empty, redirect to error page
         if (cartItems == null || cartItems.isEmpty()) {
             System.out.println("Cart is empty, redirecting to error page.");
             response.sendRedirect("error.jsp");
             return;
         }
 
-        // Get user ID from session
         Integer userId = (Integer) session.getAttribute("userId");
 
-        // If user ID is not found, redirect to shopping cart
         if (userId == null) {
             System.out.println("User not logged in, redirecting to shopping cart.");
             response.sendRedirect("shoppingCart");
             return;
         }
 
-        // Calculate total order amount
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (CartDTO cartItem : cartItems) {
             totalAmount = totalAmount.add(cartItem.getTotalPrice());
         }
 
-        // Database connection setup
         Connection connection = null;
         PreparedStatement orderStmt = null;
         PreparedStatement orderDetailStmt = null;
         PreparedStatement clearCartStmt = null;
+        PreparedStatement updateProductStmt = null;
 
         try {
-            // Get database connection from the pool
             connection = dataSource.getConnection();
-            connection.setAutoCommit(false); // Start transaction
+            connection.setAutoCommit(false);
 
-            // Insert into orders table
             String orderQuery = "INSERT INTO orders (user_id, order_date, total, status) VALUES (?, NOW(), ?, 'Pending')";
             orderStmt = connection.prepareStatement(orderQuery, Statement.RETURN_GENERATED_KEYS);
             orderStmt.setInt(1, userId);
             orderStmt.setBigDecimal(2, totalAmount);
-
             int affectedRows = orderStmt.executeUpdate();
+
             if (affectedRows == 0) {
-                System.out.println("Order insertion failed, rolling back transaction.");
                 connection.rollback();
                 throw new SQLException("Creating order failed, no rows affected.");
             }
 
-            // Get the generated order ID
             ResultSet generatedKeys = orderStmt.getGeneratedKeys();
             int orderId = 0;
             if (generatedKeys.next()) {
                 orderId = generatedKeys.getInt(1);
-                System.out.println("Order ID generated: " + orderId);
             } else {
-                System.out.println("Order ID generation failed, rolling back transaction.");
                 connection.rollback();
                 throw new SQLException("Order creation failed, no ID obtained.");
             }
 
-            // Insert into order_details table for each cart item
             String orderDetailQuery = "INSERT INTO order_details (order_id, product_id, quantity, price, user_id) VALUES (?, ?, ?, ?, ?)";
             orderDetailStmt = connection.prepareStatement(orderDetailQuery);
 
@@ -146,64 +135,67 @@ public class PlaceOrderServlet extends HttpServlet {
                 orderDetailStmt.addBatch();
             }
 
-            // Execute batch insert for order details
             orderDetailStmt.executeBatch();
 
-            // Clear cart items from database if stored in a table (optional)
+            // Decrease product quantity in the products table
+            String updateProductQuery = "UPDATE products SET stock = stock - ? WHERE id = ?";
+            updateProductStmt = connection.prepareStatement(updateProductQuery);
+
+            for (CartDTO cartItem : cartItems) {
+                updateProductStmt.setInt(1, cartItem.getQuantity());
+                updateProductStmt.setInt(2, cartItem.getProduct().getId());
+                updateProductStmt.addBatch();
+            }
+
+            updateProductStmt.executeBatch();
+
             String clearCartQuery = "DELETE FROM cart WHERE user_id = ?";
             clearCartStmt = connection.prepareStatement(clearCartQuery);
             clearCartStmt.setInt(1, userId);
             clearCartStmt.executeUpdate();
 
-            // Commit transaction
             connection.commit();
             System.out.println("Transaction committed successfully.");
 
-            // Clear the cart in the session
             session.removeAttribute("cart");
 
-            // Set attributes for the JSP to show order details
             request.setAttribute("orderId", orderId);
             request.setAttribute("orderDate", new java.util.Date());
             request.setAttribute("status", "Pending");
             request.setAttribute("totalAmount", totalAmount);
 
-            // Add success alert and navigate back to placeOrder page
             String successMessage = "Order placed successfully!";
+            request.setAttribute("orderPlaced", true);
             request.setAttribute("successMessage", successMessage);
 
-            // Forward to placeOrder page with the success alert
             RequestDispatcher dispatcher = request.getRequestDispatcher("orderConfirmation.jsp");
             dispatcher.forward(request, response);
 
         } catch (SQLException e) {
-            // Rollback transaction if any error occurs
             if (connection != null) {
                 try {
                     connection.rollback();
                     System.out.println("Transaction rolled back.");
                 } catch (SQLException ex) {
-                    ex.printStackTrace();  // More specific logging for rollback error
+                    ex.printStackTrace();
                 }
             }
-            // Log detailed error and forward to shoppingCart page
-            System.out.println("Error occurred: " + e.getMessage());
             e.printStackTrace();
             request.setAttribute("errorMessage", "An error occurred while processing your order. Please try again.");
+            request.setAttribute("orderPlaced", false);
             RequestDispatcher dispatcher = request.getRequestDispatcher("shoppingCart.jsp");
             dispatcher.forward(request, response);
         } finally {
-            // Clean up database resources
             try {
                 if (orderStmt != null) orderStmt.close();
                 if (orderDetailStmt != null) orderDetailStmt.close();
                 if (clearCartStmt != null) clearCartStmt.close();
+                if (updateProductStmt != null) updateProductStmt.close();
                 if (connection != null) connection.close();
             } catch (SQLException e) {
-                e.printStackTrace();  // Log closing errors
+                e.printStackTrace();
             }
         }
     }
-
 }
 
