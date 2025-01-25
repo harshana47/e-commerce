@@ -9,31 +9,53 @@
     <title>Product Catalog</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+            box-sizing: border-box;
+            scroll-padding-top: 2rem;
+            list-style: none;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+        }
         body {
             background-color: #f7f7f7;
             font-family: 'Arial', sans-serif;
+            color: #2f2f2f;
+            background: var(--bg-color););
         }
+        :root {
+            --main-color: #f54744;
+            --text-color: #2f2f2f;
+            --bg-color: #fff;
 
-        .top-right-icons {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+            --big-font: 3.2rem;
+            --h2-font: 2rem;
+        }
+        .top-icons {
             display: flex;
-            gap: 15px;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 15px;
+            /*background-color: #f8f9fa;*/
+            /*border-bottom: 1px solid #e1e1e1;*/
         }
 
-        .icon {
-            font-size: 24px;
+        .top-icons .icon {
+            margin-left: 17px;
+            font-size: 20px;
             position: relative;
         }
 
-        .icon a {
+        .top-icons .icon a {
             text-decoration: none;
             color: #333;
         }
 
-        .badge {
+        .top-icons .badge {
             position: absolute;
             top: -5px;
             right: -10px;
@@ -42,6 +64,11 @@
             color: white;
             border-radius: 50%;
             padding: 3px 7px;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .product-card {
@@ -85,15 +112,16 @@
         }
 
         .btn-custom {
-            background-color: #007bff;
+            background: var(--main-color);
             color: white;
             border-radius: 5px;
             padding: 8px 15px;
             font-size: 14px;
+            width: 200px;
         }
 
         .btn-custom:hover {
-            background-color: #0056b3;
+            background-color: #fc5552;
         }
 
         .search-container {
@@ -103,8 +131,22 @@
         .section-header {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #007bff;
+            color: #F54744FF;
             margin-bottom: 20px;
+        }
+
+        #h1{
+            margin-top: -40px;
+            color: #F54744FF;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        #h3{
+            margin-top: -5px;
+            margin-bottom: 40px;
+            color: #1b1a1a;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
         }
     </style>
     <script>
@@ -126,11 +168,54 @@
     </script>
 </head>
 <body>
-<div class="container mt-5 position-relative">
+<div class="container-fluid px-0">
 
-    <!-- Top Right Icons -->
-    <div class="top-right-icons">
-        <!-- Cart Icon with Count -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Foods</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:8080/Assignment_EE_war_exploded">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productBrowsing">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="shoppingCart">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="orderHistory">Order History</a>
+                    </li>
+
+                    <!-- Account dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Account
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <!-- Show Log In if the user is NOT logged in -->
+                            <c:if test="${sessionScope.isLoggedIn == null || !sessionScope.isLoggedIn}">
+                                <li><a class="dropdown-item" href="login.jsp">Log In</a></li>
+                            </c:if>
+
+                            <!-- Show Log Out and User Details if the user is logged in -->
+                            <c:if test="${sessionScope.isLoggedIn != null && sessionScope.isLoggedIn}">
+                                <li><a class="dropdown-item" href="userProfile">User Details</a></li>
+                                <li><a class="dropdown-item" href="login.jsp">Log Out</a></li>
+                            </c:if>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Top Icons -->
+    <div class="top-icons">
         <div class="icon">
             <a href="shoppingCart" title="View Cart">
                 <i class="fas fa-shopping-cart"></i>
@@ -141,22 +226,20 @@
                 </span>
             </a>
         </div>
-
-        <!-- Order History Button -->
         <div class="icon">
             <a href="orderHistory" title="Order History">
                 <i class="fas fa-history"></i>
             </a>
         </div>
     </div>
-
     <!-- Page Title -->
-    <h1 class="text-center text-primary mb-4">Product Catalog</h1>
+    <h1 id="h1" class="text-center ">Feeling Hungry?</h1>
+    <h3 id="h3" class="text-center "> Your Cravings End Here!</h3>
 
-    <!-- Search and Filter Form -->
+    <!-- Search Form -->
     <form method="get" action="productBrowsing" class="row g-3 mb-4 search-container">
         <div class="col-md-3">
-            <select name="categoryId" class="form-select">
+            <select name="categoryId" class="form-select" style="width: 250px;margin-left: 110px;">
                 <option value="">All Categories</option>
                 <% Map<Integer, String> categories = (Map<Integer, String>) request.getAttribute("categories");
                     for (Map.Entry<Integer, String> category : categories.entrySet()) { %>
@@ -164,7 +247,7 @@
                 <% } %>
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" style="margin-left: -5px;margin-right: 5px;">
             <input type="text" name="search" class="form-control" placeholder="Search by product name">
         </div>
         <div class="col-md-2">
@@ -175,50 +258,47 @@
             </select>
         </div>
         <div class="col-md-3">
-            <button type="submit" class="btn btn-primary w-100">Search</button>
+            <button type="submit" class="btn btn-custom ">Search</button>
         </div>
     </form>
 
-<div class="container mt-5">
-    <h1 class="text-center text-primary mb-4">Product Catalog</h1>
-
-    <% Map<String, List<ProductDTO>> groupedProducts = (Map<String, List<ProductDTO>>) request.getAttribute("groupedProducts");
-        if (groupedProducts.isEmpty()) { %>
-    <div class="alert alert-info text-center">No products found.</div>
-    <% } else { %>
-    <% for (Map.Entry<String, List<ProductDTO>> entry : groupedProducts.entrySet()) { %>
-    <section class="mb-5">
-        <h2 class="section-header text-primary"><%= entry.getKey() %></h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <% for (ProductDTO product : entry.getValue()) { %>
-            <div class="col">
-                <div class="card product-card">
-                    <!-- Product Image -->
-                    <img src="<%= product.getImagePath() %>" class="card-img-top" alt="<%= product.getName() %>">
-
-                    <div class="card-body">
-                        <h5 class="card-title"><%= product.getName() %></h5>
-                        <p class="card-text"><%= product.getDescription() %></p>
-                        <p class="price">$<%= product.getPrice() %></p>
-                    </div>
-                    <div class="card-footer text-center">
-                        <form method="post" action="productBrowsing">
-                            <input type="hidden" name="productId" value="<%= product.getId() %>">
-                            <input type="hidden" name="userId" value="1">
-                            <div class="input-group mb-2">
-                                <input type="number" name="quantity" class="form-control" value="1" min="1" placeholder="Quantity">
-                            </div>
-                            <button type="submit" class="btn btn-custom">Add to Cart</button>
-                        </form>
+    <!-- Product Listing -->
+    <div class="container">
+        <% Map<String, List<ProductDTO>> groupedProducts = (Map<String, List<ProductDTO>>) request.getAttribute("groupedProducts");
+            if (groupedProducts.isEmpty()) { %>
+        <div class="alert alert-info text-center">No products found.</div>
+        <% } else { %>
+        <% for (Map.Entry<String, List<ProductDTO>> entry : groupedProducts.entrySet()) { %>
+        <section class="mb-5">
+            <h2 class="section-header "><%= entry.getKey() %></h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <% for (ProductDTO product : entry.getValue()) { %>
+                <div class="col">
+                    <div class="card product-card">
+                        <img src="<%= product.getImagePath() %>" class="card-img-top" alt="<%= product.getName() %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= product.getName() %></h5>
+                            <p class="card-text"><%= product.getDescription() %></p>
+                            <p class="price">$<%= product.getPrice() %></p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <form method="post" action="productBrowsing">
+                                <input type="hidden" name="productId" value="<%= product.getId() %>">
+                                <input type="hidden" name="userId" value="1">
+                                <div class="input-group mb-2">
+                                    <input type="number" name="quantity" class="form-control" value="1" min="1" placeholder="Quantity">
+                                </div>
+                                <button type="submit" class="btn btn-success">Add to Cart</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <% } %>
             </div>
-            <% } %>
-        </div>
-    </section>
-    <% } %>
-    <% } %>
-</div>
+        </section>
+        <% } %>
+        <% } %>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

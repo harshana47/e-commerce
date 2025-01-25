@@ -1,4 +1,5 @@
 <%@ page import="DTO.ProductDTO" %>
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     // Get the ProductDTO object from the request attribute
@@ -43,13 +44,24 @@
             <input type="number" class="form-control" id="stock" name="product_stock" required value="<%= product.getStock() %>">
         </div>
 
-        <!-- Category ID -->
         <div class="mb-3">
             <label for="category_id" class="form-label">Category</label>
-            <input type="number" class="form-control" id="category_id" name="category_id" required value="<%= product.getCategoryId() %>">
+            <select class="form-control" id="category_id" name="category_id" required>
+                <%
+                    List<String> categories = (List<String>) request.getAttribute("categories");
+                    int currentCategoryId = product.getCategoryId(); // Current product category ID
+                    for (String category : categories) {
+                        String[] parts = category.split(":");
+                        int categoryId = Integer.parseInt(parts[0]);
+                        String categoryName = parts[1];
+                %>
+                <option value="<%= categoryId %>" <%= categoryId == currentCategoryId ? "selected" : "" %>>
+                    <%= categoryName %>
+                </option>
+                <% } %>
+            </select>
         </div>
 
-        <!-- Product Image -->
         <!-- Product Image -->
         <div class="mb-3">
             <label for="image" class="form-label">Product Image</label>

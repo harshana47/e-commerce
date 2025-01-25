@@ -74,6 +74,7 @@
 </head>
 <body>
 <div class="container">
+    <a href="productBrowsing" class="btn btn-success">Back</a>
     <h2>Your Cart</h2>
 
     <%

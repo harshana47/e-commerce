@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "ProductUpdateServlet", value = "/updateProduct")
 @MultipartConfig // Enable file uploads
@@ -48,11 +50,23 @@ public class ProductUpdateServlet extends HttpServlet {
                                 resultSet.getString("image_path") // Include image path
                         );
 
-                        // Set the ProductDTO as an attribute in the request
-                        request.setAttribute("product", product);
+                        // Fetch categories to populate the dropdown
+                        String categoryQuery = "SELECT id, name FROM categories";
+                        try (PreparedStatement categoryStmt = connection.prepareStatement(categoryQuery);
+                             ResultSet categoryRs = categoryStmt.executeQuery()) {
 
-                        // Forward the request to the updateProduct.jsp
-                        request.getRequestDispatcher("updateProduct.jsp").forward(request, response);
+                            List<String> categories = new ArrayList<>();
+                            while (categoryRs.next()) {
+                                categories.add(categoryRs.getInt("id") + ":" + categoryRs.getString("name"));
+                            }
+
+                            // Set the ProductDTO and categories as attributes
+                            request.setAttribute("product", product);
+                            request.setAttribute("categories", categories);
+
+                            // Forward the request to the updateProduct.jsp
+                            request.getRequestDispatcher("updateProduct.jsp").forward(request, response);
+                        }
                     } else {
                         response.sendRedirect("adminHome.jsp?message=Product not found");
                     }
@@ -65,6 +79,7 @@ public class ProductUpdateServlet extends HttpServlet {
             response.sendRedirect("adminHome.jsp?message=No product ID provided");
         }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

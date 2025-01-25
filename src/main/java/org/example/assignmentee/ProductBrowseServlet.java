@@ -211,7 +211,5 @@ public class ProductBrowseServlet extends HttpServlet {
             throw new ServletException("Database error", e);
         }
     }
-
-
 }
 

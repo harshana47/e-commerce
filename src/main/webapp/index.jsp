@@ -64,6 +64,40 @@
 
         .navbar a:hover { background: var(--main-color); color: #fff; border-radius: 2rem; }
 
+        .dropdown .dropbtn {
+            cursor: pointer;
+        }
+
+        .navbar li .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: inherit; /* Matches navbar background */
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .navbar li .dropdown-content a {
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            /* Keep the color styles from the navbar */
+        }
+
+        .navbar li:hover .dropdown-content {
+            display: block; /* Show dropdown on hover */
+        }
+
+        /* Hover Effects */
+        .navbar li a:hover {
+            /* Retain hover effects from your existing CSS */
+        }
+
+        .navbar li .dropdown-content a:hover {
+            /* Ensure the dropdown links have a hover effect */
+        }
+
         #menu-icon {
             font-size: 2rem;
             cursor: pointer;
@@ -238,7 +272,16 @@
         <li><a href="#chefs">Our Chefs</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="productBrowsing">Foods</a></li>
+        <!-- Dropdown for Login -->
+        <li class="dropdown">
+            <a href="javascript:void(0)" class="dropbtn">Login</a>
+            <div class="dropdown-content">
+                <a href="login.jsp">Customer</a>
+                <a href="login.jsp">Admin</a>
+            </div>
+        </li>
     </ul>
+
 </header>
 
 <section class="home" id="home">
