@@ -127,7 +127,7 @@ public class ProductBrowseServlet extends HttpServlet {
         HttpSession session = request.getSession(false); // false to prevent creating a new session if it doesn't exist
         if (session == null || session.getAttribute("userId") == null) {
             response.setContentType("text/html");
-            response.getWriter().println("<script>alert('User is not logged in. Please log in to continue.'); window.location='http://localhost:8080/Assignment_EE_war_exploded/';</script>");
+            response.getWriter().println("<script>alert('User is not logged in. Please log in to continue.'); window.location='login.jsp';</script>");
             return;
         }
 

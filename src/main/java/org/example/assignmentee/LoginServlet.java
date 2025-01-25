@@ -57,17 +57,17 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect("productBrowsing");  // Redirect to home page after login
                 } else {
                     request.setAttribute("errorMessage", "Invalid email or password.");
-                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
                 }
             } else {
                 request.setAttribute("errorMessage", "Invalid email or password.");
-                request.getRequestDispatcher("index.jsp").forward(request, response);
+                request.getRequestDispatcher("login.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "An error occurred. Please try again.");
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 }
