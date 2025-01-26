@@ -16,7 +16,6 @@
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Update Category</h1>
     <form method="post" action="updateCategory">
-        <!-- Include a hidden field for category ID if this is an update -->
         <input type="hidden" name="category_id" value="<%= category.getId() %>">
 
         <div class="mb-3">

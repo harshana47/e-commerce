@@ -18,11 +18,10 @@ public class ProductSaveServlet extends HttpServlet {
     @Resource(name = "java:comp/env/jdbc/pool")
     private DataSource dataSource;
 
-    private static final String UPLOAD_DIR = "images"; // Directory within the project for image storage
+    private static final String UPLOAD_DIR = "images";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Fetch categories from the database
         List<CategoryDTO> categories = new ArrayList<>();
 
         try {
@@ -32,11 +31,10 @@ public class ProductSaveServlet extends HttpServlet {
             Statement stm = connection.createStatement();
             ResultSet rst = stm.executeQuery(sql);
 
-            // Populate the category list
             while (rst.next()) {
                 int id = rst.getInt("id");
                 String name = rst.getString("name");
-                categories.add(new CategoryDTO(id, name, null)); // Assuming CategoryDTO constructor
+                categories.add(new CategoryDTO(id, name, null));
             }
 
         } catch (SQLException | ClassNotFoundException e) {
@@ -44,14 +42,12 @@ public class ProductSaveServlet extends HttpServlet {
             request.setAttribute("error", "Error fetching categories: " + e.getMessage());
         }
 
-        // Set the categories attribute for the JSP
         request.setAttribute("categories", categories);
         request.getRequestDispatcher("addProduct.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Retrieve form data
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         double price = 0.0;
@@ -64,11 +60,10 @@ public class ProductSaveServlet extends HttpServlet {
             categoryId = Integer.parseInt(request.getParameter("category_id"));
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid input values.");
-            doGet(request, response); // Reload categories and show form
+            doGet(request, response);
             return;
         }
 
-        // Retrieve image part
         Part imagePart = request.getPart("image");
         if (imagePart == null || imagePart.getSize() == 0) {
             request.setAttribute("error", "Product image is required.");
@@ -76,11 +71,10 @@ public class ProductSaveServlet extends HttpServlet {
             return;
         }
 
-        // Save image to local folder
         String fileName = imagePart.getSubmittedFileName();
         String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
         File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) uploadDir.mkdir(); // Create the directory if it doesn't exist
+        if (!uploadDir.exists()) uploadDir.mkdir();
 
         String filePath = uploadPath + File.separator + fileName;
         try (InputStream inputStream = imagePart.getInputStream();
@@ -97,7 +91,6 @@ public class ProductSaveServlet extends HttpServlet {
             return;
         }
 
-        // SQL Query for inserting product
         String insertProductQuery = "INSERT INTO products (name, description, price, stock, category_id, image_path) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = dataSource.getConnection();
@@ -108,21 +101,20 @@ public class ProductSaveServlet extends HttpServlet {
             preparedStatement.setDouble(3, price);
             preparedStatement.setInt(4, stock);
             preparedStatement.setInt(5, categoryId);
-            preparedStatement.setString(6, UPLOAD_DIR + "/" + fileName); // Save relative path to the database
-
+            preparedStatement.setString(6, UPLOAD_DIR + "/" + fileName);
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
                 response.sendRedirect("product");
             } else {
                 request.setAttribute("error", "Failed to add product.");
-                doGet(request, response); // Reload categories and show form
+                doGet(request, response);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
             request.setAttribute("error", "Database error occurred: " + e.getMessage());
-            doGet(request, response); // Reload categories and show form
+            doGet(request, response);
         }
     }
 }

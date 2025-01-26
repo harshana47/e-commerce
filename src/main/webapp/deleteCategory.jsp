@@ -24,7 +24,6 @@
     <div class="alert alert-warning text-center">
         Are you sure you want to delete this category? This action cannot be undone.
     </div>
-    <!-- Add your form for confirming deletion -->
     <form action="deleteCategory" method="get" class="text-center">
         <!-- Include the category ID as a hidden field -->
         <input type="hidden" name="id" value="<%= request.getParameter("id") %>">

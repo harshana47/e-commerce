@@ -27,7 +27,7 @@ public class CategoryDeleteServlet extends HttpServlet {
             try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
                 String query = "DELETE FROM categories WHERE id = ?";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    preparedStatement.setInt(1, Integer.parseInt(id)); // Set the category ID in the query
+                    preparedStatement.setInt(1, Integer.parseInt(id));
                     int rowsAffected = preparedStatement.executeUpdate();
 
                     if (rowsAffected > 0) {

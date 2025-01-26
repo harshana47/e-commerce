@@ -7,9 +7,8 @@ public class OrderDetailDTO {
     private double price;
     private String orderDate;
     private double total;
-    private int userId;  // Add userId field
+    private int userId;
 
-    // Constructor including userId
     public OrderDetailDTO(int orderId, int productId, int quantity, double price,
                           String orderDate, double total, int userId) {
         this.orderId = orderId;
@@ -18,11 +17,10 @@ public class OrderDetailDTO {
         this.price = price;
         this.orderDate = orderDate;
         this.total = total;
-        this.userId = userId;  // Initialize userId
+        this.userId = userId;
     }
 
 
-    // Getters and Setters
     public int getOrderId() {
         return orderId;
     }

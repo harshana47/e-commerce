@@ -55,7 +55,6 @@
 <br><br>
 <div class="container">
     <div class="row">
-        <!-- Iterate over categories -->
         <%
             if (categories != null) {
                 for (CategoryDTO category : categories) {

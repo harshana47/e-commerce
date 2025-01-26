@@ -22,46 +22,38 @@ public class PlaceOrderServlet extends HttpServlet {
     private DataSource dataSource;
 
     @Override
-    // Handle GET requests to display order-related information (products, prices, etc.)
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("GET request received for /placeOrder");
 
-        // Get the user's session
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
         System.out.println("User ID from session: " + userId);  // Log user ID
 
 
-        // If user ID is not found, redirect to login page
         if (userId == null) {
             System.out.println("User not logged in, redirecting to login page.");
             response.sendRedirect("login.jsp");
             return;
         }
 
-        // Get the cart items from session
         List<CartDTO> cartItems = (List<CartDTO>) session.getAttribute("cart");
         System.out.println("Cart Items: " + (cartItems != null ? cartItems.size() : 0));  // Log cart items count
 
 
-        // If cart is empty, redirect to error page
         if (cartItems == null || cartItems.isEmpty()) {
             System.out.println("Cart is empty, redirecting to error page.");
             response.sendRedirect("error.jsp");
             return;
         }
 
-        // Calculate total order amount
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (CartDTO cartItem : cartItems) {
             totalAmount = totalAmount.add(cartItem.getTotalPrice());
         }
 
-        // Set attributes for the JSP page to display
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalAmount", totalAmount);
 
-        // Forward to the Place Order page (JSP)
         RequestDispatcher dispatcher = request.getRequestDispatcher("placeOrder.jsp");
         dispatcher.forward(request, response);
     }
@@ -137,7 +129,6 @@ public class PlaceOrderServlet extends HttpServlet {
 
             orderDetailStmt.executeBatch();
 
-            // Decrease product quantity in the products table
             String updateProductQuery = "UPDATE products SET stock = stock - ? WHERE id = ?";
             updateProductStmt = connection.prepareStatement(updateProductQuery);
 

@@ -27,7 +27,6 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Hash the password
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
         String query = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
@@ -41,10 +40,8 @@ public class RegisterServlet extends HttpServlet {
 
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
-                // Registration successful
                 response.sendRedirect("http://localhost:8080/Assignment_EE_war_exploded/?message=Registration successful! Please log in.");
             } else {
-                // Registration failed
                 request.setAttribute("errorMessage", "Registration failed. Please try again.");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
             }

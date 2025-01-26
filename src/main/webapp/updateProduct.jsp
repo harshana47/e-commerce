@@ -2,7 +2,6 @@
 <%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-    // Get the ProductDTO object from the request attribute
     ProductDTO product = (ProductDTO) request.getAttribute("product");
 %>
 <!DOCTYPE html>
@@ -17,28 +16,23 @@
 <div class="container mt-5">
     <h1 class="mb-4 text-center">Update Product</h1>
     <form method="post" action="updateProduct" enctype="multipart/form-data">
-        <!-- Include a hidden field for product ID if this is an update -->
         <input type="hidden" name="product_id" value="<%= product.getId() %>">
 
-        <!-- Product Name -->
         <div class="mb-3">
             <label for="name" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="name" name="product_name" required value="<%= product.getName() %>">
         </div>
 
-        <!-- Product Description -->
         <div class="mb-3">
             <label for="description" class="form-label">Product Description</label>
             <textarea class="form-control" id="description" name="product_description" rows="3" required><%= product.getDescription() %></textarea>
         </div>
 
-        <!-- Product Price -->
         <div class="mb-3">
             <label for="price" class="form-label">Product Price</label>
             <input type="number" class="form-control" id="price" name="product_price" required value="<%= product.getPrice() %>" step="0.01">
         </div>
 
-        <!-- Product Stock -->
         <div class="mb-3">
             <label for="stock" class="form-label">Product Stock</label>
             <input type="number" class="form-control" id="stock" name="product_stock" required value="<%= product.getStock() %>">
@@ -80,7 +74,6 @@
             <p class="mt-3 text-muted">No current image available for this product.</p>
             <% } %>
         </div>
-
 
         <!-- Submit and Back Buttons -->
         <div class="d-flex justify-content-between">

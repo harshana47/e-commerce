@@ -1,7 +1,6 @@
 <%@ page import="DTO.UserDTO" %>
 <%@ page import="java.util.List" %>
 <%
-    // Get the list of users from the request
     List<UserDTO> users = (List<UserDTO>) request.getAttribute("users");
 %>
 <!DOCTYPE html>

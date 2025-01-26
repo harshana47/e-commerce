@@ -7,7 +7,7 @@ public class CartDTO {
     private int userId;
     private ProductDTO product;
     private int quantity;
-    private BigDecimal totalPrice;  // Change to BigDecimal
+    private BigDecimal totalPrice;
 
     public CartDTO(int id, int userId, ProductDTO product, int quantity, BigDecimal totalPrice) {
         this.id = id;
@@ -17,7 +17,6 @@ public class CartDTO {
         this.totalPrice = totalPrice;
     }
 
-    // Getters and Setters for id, userId, product, quantity, and totalPrice
     public int getId() {
         return id;
     }

@@ -191,18 +191,15 @@
                         <a class="nav-link" href="orderHistory">Order History</a>
                     </li>
 
-                    <!-- Account dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Account
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <!-- Show Log In if the user is NOT logged in -->
                             <c:if test="${sessionScope.isLoggedIn == null || !sessionScope.isLoggedIn}">
                                 <li><a class="dropdown-item" href="login.jsp">Log In</a></li>
                             </c:if>
 
-                            <!-- Show Log Out and User Details if the user is logged in -->
                             <c:if test="${sessionScope.isLoggedIn != null && sessionScope.isLoggedIn}">
                                 <li><a class="dropdown-item" href="userProfile">User Details</a></li>
                                 <li><a class="dropdown-item" href="login.jsp">Log Out</a></li>

@@ -119,17 +119,14 @@
     <h2>Your Cart</h2>
 
     <%
-        // Retrieve the cartItems from the request
         List<CartDTO> cartItems = (List<CartDTO>) request.getAttribute("cartItems");
 
-        // Check if cart is empty
         if (cartItems == null || cartItems.isEmpty()) {
     %>
     <div class="alert" role="alert">
         Your cart is empty.
     </div>
     <div class="checkout-btn">
-        <!-- Display "Back to Products" button when the cart is empty -->
         <a href="productBrowsing" class="btn btn-primary btn-icon">
             <i class="fas fa-arrow-left"></i> Back to Products
         </a>
@@ -139,7 +136,6 @@
     %>
     <div class="row">
         <%
-            // Loop through each cart item and display it
             for (CartDTO item : cartItems) {
                 ProductDTO product = item.getProduct();
                 String formattedPrice = new DecimalFormat("#0.00").format(product.getPrice());

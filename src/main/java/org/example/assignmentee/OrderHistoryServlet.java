@@ -26,7 +26,6 @@ public class OrderHistoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Get the userId from the session
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             response.sendRedirect("login.jsp?message=Please login to view orders");
@@ -52,7 +51,6 @@ public class OrderHistoryServlet extends HttpServlet {
                 orders.add(order);
             }
 
-            // Pass orders to the JSP
             request.setAttribute("orders", orders);
             request.getRequestDispatcher("orderHistory.jsp").forward(request, response);
 

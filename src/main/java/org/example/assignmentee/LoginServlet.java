@@ -28,12 +28,11 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // Check for admin credentials
         if ("admin1@gmail.com".equals(email) && "admin123".equals(password)) {
             HttpSession session = request.getSession();
-            session.setAttribute("userId", 0); // Optionally set a default ID for the admin
+            session.setAttribute("userId", 0);
             session.setAttribute("username", "Admin");
-            response.sendRedirect("index"); // Redirect to admin index page
+            response.sendRedirect("index");
             return;
         }
 
@@ -48,7 +47,6 @@ public class LoginServlet extends HttpServlet {
             if (resultSet.next()) {
                 String status = resultSet.getString("status");
 
-                // Check if user status is 'Inactive'
                 if ("Inactive".equalsIgnoreCase(status)) {
                     request.setAttribute("errorMessage", "Your account is inactive. Please contact support.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -62,9 +60,9 @@ public class LoginServlet extends HttpServlet {
                 if (BCrypt.checkpw(password, hashedPassword)) {
                     HttpSession session = request.getSession();
                     session.setAttribute("userId", userId);
-                    session.setAttribute("username", username);  // Storing username in session
-                    session.setAttribute("isLoggedIn", true);    // Set login status
-                    response.sendRedirect("productBrowsing");   // Redirect to home page after login
+                    session.setAttribute("username", username);
+                    session.setAttribute("isLoggedIn", true);
+                    response.sendRedirect("productBrowsing");
                 } else {
                     request.setAttribute("errorMessage", "Invalid email or password.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);

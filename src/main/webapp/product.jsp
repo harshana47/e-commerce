@@ -13,19 +13,16 @@
 </head>
 <body>
 <div class="container my-5">
-    <!-- Back Button -->
     <a href="index" class="btn btn-primary mb-3">Back to Categories</a>
 
     <h1 class="text-center mb-5">Products by Category</h1>
 
-    <!-- Add Product Button -->
     <a href="addProduct" class="btn btn-success mb-3">Add New Product</a>
 
     <%
         List<CategoryDTO> categories = (List<CategoryDTO>) request.getAttribute("categories");
         Map<Integer, List<ProductDTO>> productsByCategory = (Map<Integer, List<ProductDTO>>) request.getAttribute("productsByCategory");
 
-        // Iterate through categories and display their products
         for (CategoryDTO category : categories) {
     %>
     <div class="category-section">
@@ -39,7 +36,6 @@
             %>
             <div class="col-md-3">
                 <div class="card mb-4">
-                    <!-- Display the product image if it exists -->
                     <%
                         String imagePath = product.getImagePath();  // Get image path from the product DTO
                         if (imagePath != null && !imagePath.isEmpty()) {
@@ -48,7 +44,6 @@
                     <%
                     } else {
                     %>
-                    <!-- Fallback image if no image path exists -->
                     <img src="https://via.placeholder.com/150" class="card-img-top" alt="<%= product.getName() %>">
                     <%
                         }

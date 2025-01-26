@@ -29,7 +29,7 @@ public class CategorySaveServlet extends HttpServlet {
                 stmt.setString(1, categoryName);
                 stmt.setString(2, categoryDescription);
                 stmt.executeUpdate();
-                resp.sendRedirect("adminHome.jsp"); // Redirect to the homepage or list page
+                resp.sendRedirect("adminHome.jsp");
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -2,7 +2,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%
-    // Retrieve the list of orders from the request
     List<OrderDTO> orders = (List<OrderDTO>) request.getAttribute("orders");
 %>
 <!DOCTYPE html>

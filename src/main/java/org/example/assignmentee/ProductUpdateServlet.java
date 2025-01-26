@@ -39,7 +39,6 @@ public class ProductUpdateServlet extends HttpServlet {
                     ResultSet resultSet = preparedStatement.executeQuery();
 
                     if (resultSet.next()) {
-                        // Create a ProductDTO object to pass to the JSP
                         ProductDTO product = new ProductDTO(
                                 resultSet.getInt("id"),
                                 resultSet.getString("name"),
@@ -47,10 +46,9 @@ public class ProductUpdateServlet extends HttpServlet {
                                 resultSet.getBigDecimal("price"),
                                 resultSet.getInt("stock"),
                                 resultSet.getInt("category_id"),
-                                resultSet.getString("image_path") // Include image path
+                                resultSet.getString("image_path")
                         );
 
-                        // Fetch categories to populate the dropdown
                         String categoryQuery = "SELECT id, name FROM categories";
                         try (PreparedStatement categoryStmt = connection.prepareStatement(categoryQuery);
                              ResultSet categoryRs = categoryStmt.executeQuery()) {
@@ -60,11 +58,9 @@ public class ProductUpdateServlet extends HttpServlet {
                                 categories.add(categoryRs.getInt("id") + ":" + categoryRs.getString("name"));
                             }
 
-                            // Set the ProductDTO and categories as attributes
                             request.setAttribute("product", product);
                             request.setAttribute("categories", categories);
 
-                            // Forward the request to the updateProduct.jsp
                             request.getRequestDispatcher("updateProduct.jsp").forward(request, response);
                         }
                     } else {
@@ -90,26 +86,24 @@ public class ProductUpdateServlet extends HttpServlet {
         int productStock = Integer.parseInt(req.getParameter("product_stock"));
         int categoryId = Integer.parseInt(req.getParameter("category_id"));
 
-        // Handle file upload (product image)
-        Part filePart = req.getPart("product_image"); // Get the file part from the form
+        Part filePart = req.getPart("product_image");
         String imagePath = null;
 
         try (Connection connection = dataSource.getConnection()) {
-            // Retrieve the existing image path if no new image is uploaded
+
             if (filePart != null && filePart.getSize() > 0) {
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                String uploadDir = getServletContext().getRealPath("/images"); // Directory to store images
+                String uploadDir = getServletContext().getRealPath("/images");
                 File uploadDirectory = new File(uploadDir);
 
                 if (!uploadDirectory.exists()) {
-                    uploadDirectory.mkdir(); // Create directory if it doesn't exist
+                    uploadDirectory.mkdir();
                 }
 
                 String filePath = uploadDir + File.separator + fileName;
                 filePart.write(filePath);
-                imagePath = "images/" + fileName; // Store the relative path in the database
+                imagePath = "images/" + fileName;
             } else {
-                // Retrieve the current image path if no new file is uploaded
                 String query = "SELECT image_path FROM products WHERE id = ?";
                 try (PreparedStatement stmt = connection.prepareStatement(query)) {
                     stmt.setInt(1, productId);
@@ -120,7 +114,6 @@ public class ProductUpdateServlet extends HttpServlet {
                 }
             }
 
-            // Update product details in the database
             String sql = "UPDATE products SET name = ?, description = ?, price = ?, stock = ?, category_id = ?, image_path = ? WHERE id = ?";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
                 stmt.setString(1, productName);
@@ -128,13 +121,13 @@ public class ProductUpdateServlet extends HttpServlet {
                 stmt.setBigDecimal(3, productPrice);
                 stmt.setInt(4, productStock);
                 stmt.setInt(5, categoryId);
-                stmt.setString(6, imagePath); // Update image path
+                stmt.setString(6, imagePath);
                 stmt.setInt(7, productId);
 
                 int rowsUpdated = stmt.executeUpdate();
 
                 if (rowsUpdated > 0) {
-                    resp.sendRedirect("product"); // Redirect to the homepage or product list page
+                    resp.sendRedirect("product");
                 } else {
                     resp.getWriter().println("Error: Product not found or no changes made.");
                 }

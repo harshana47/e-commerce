@@ -70,7 +70,7 @@ public class CategoryUpdateServlet extends HttpServlet {
                 int rowsUpdated = stmt.executeUpdate();
 
                 if (rowsUpdated > 0) {
-                    resp.sendRedirect("index"); // Redirect to the homepage or list page
+                    resp.sendRedirect("index");
                 } else {
                     resp.getWriter().println("Error: Category not found or no changes made.");
                 }

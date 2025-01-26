@@ -27,7 +27,6 @@ public class OrderDTO {
         this.total = new BigDecimal(total);
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }

@@ -26,20 +26,19 @@ public class ProductBrowseServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("userId") != null) {
             int userId = (int) session.getAttribute("userId");
-            int cartCount = 0; // Get cart count for the logged-in user
+            int cartCount = 0;
             try {
                 cartCount = getCartCount(userId);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            request.setAttribute("cartCount", cartCount); // Set cart count as request attribute
+            request.setAttribute("cartCount", cartCount);
         }
 
         Map<Integer, String> categoryMap = new LinkedHashMap<>();
         List<ProductDTO> products = new ArrayList<>();
 
         try (Connection conn = dataSource.getConnection()) {
-            // Fetch categories
             String categoryQuery = "SELECT id, name FROM categories ORDER BY name ASC";
             try (PreparedStatement stmt = conn.prepareStatement(categoryQuery);
                  ResultSet rs = stmt.executeQuery()) {
@@ -48,7 +47,6 @@ public class ProductBrowseServlet extends HttpServlet {
                 }
             }
 
-            // Fetch products
             StringBuilder productQuery = new StringBuilder(
                     "SELECT id, name, description, price, stock, category_id, image_path FROM products WHERE 1=1 "
             );
@@ -101,7 +99,6 @@ public class ProductBrowseServlet extends HttpServlet {
         request.setAttribute("groupedProducts", groupedProducts);
         request.setAttribute("categories", categoryMap);
 
-        // Forward to JSP
         RequestDispatcher dispatcher = request.getRequestDispatcher("productBrowsing.jsp");
         dispatcher.forward(request, response);
     }
@@ -123,15 +120,14 @@ public class ProductBrowseServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get the user ID from the session
-        HttpSession session = request.getSession(false); // false to prevent creating a new session if it doesn't exist
+        HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userId") == null) {
             response.setContentType("text/html");
             response.getWriter().println("<script>alert('User is not logged in. Please log in to continue.'); window.location='login.jsp';</script>");
             return;
         }
 
-        int userId = (int) session.getAttribute("userId"); // Retrieve user ID from session
+        int userId = (int) session.getAttribute("userId");
 
         String productId = request.getParameter("productId");
         String quantityParam = request.getParameter("quantity");
@@ -145,7 +141,6 @@ public class ProductBrowseServlet extends HttpServlet {
         }
 
         try (Connection conn = dataSource.getConnection()) {
-            // Validate product existence and stock
             String productQuery = "SELECT id, name, price, stock FROM products WHERE id = ?";
             try (PreparedStatement productStmt = conn.prepareStatement(productQuery)) {
                 productStmt.setInt(1, Integer.parseInt(productId));
@@ -154,14 +149,12 @@ public class ProductBrowseServlet extends HttpServlet {
                     if (rs.next()) {
                         int productStock = rs.getInt("stock");
 
-                        // Check if the requested quantity exceeds stock
                         if (productQty > productStock) {
                             response.setContentType("text/html");
                             response.getWriter().println("<script>alert('Insufficient stock available.'); window.history.back();</script>");
                             return;
                         }
 
-                        // Check if the product is already in the cart for this user
                         String cartCheckQuery = "SELECT quantity FROM cart WHERE user_id = ? AND product_id = ?";
                         try (PreparedStatement cartCheckStmt = conn.prepareStatement(cartCheckQuery)) {
                             cartCheckStmt.setInt(1, userId);
@@ -169,7 +162,6 @@ public class ProductBrowseServlet extends HttpServlet {
 
                             try (ResultSet cartRs = cartCheckStmt.executeQuery()) {
                                 if (cartRs.next()) {
-                                    // If the product already exists in the cart, update the quantity
                                     int existingQty = cartRs.getInt("quantity");
                                     String updateCartQuery = "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
                                     try (PreparedStatement updateCartStmt = conn.prepareStatement(updateCartQuery)) {
@@ -179,7 +171,6 @@ public class ProductBrowseServlet extends HttpServlet {
                                         updateCartStmt.executeUpdate();
                                     }
                                 } else {
-                                    // If the product is not in the cart, insert it as a new row
                                     String insertCartQuery = "INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)";
                                     try (PreparedStatement insertCartStmt = conn.prepareStatement(insertCartQuery)) {
                                         insertCartStmt.setInt(1, userId);
@@ -191,7 +182,6 @@ public class ProductBrowseServlet extends HttpServlet {
                             }
                         }
                     } else {
-                        // If the product doesn't exist
                         response.setContentType("text/html");
                         response.getWriter().println("<script>alert('Product not found.'); window.history.back();</script>");
                         return;
@@ -199,11 +189,9 @@ public class ProductBrowseServlet extends HttpServlet {
                 }
             }
 
-            // After adding to cart, get the updated cart count and pass it to the JSP
             int cartCount = getCartCount(userId);
             request.setAttribute("cartCount", cartCount);
 
-            // Redirect to the cart page or show a success message
             response.setContentType("text/html");
             response.getWriter().println("<script>alert('Product successfully added to cart.'); window.location='productBrowsing';</script>");
 

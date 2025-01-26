@@ -45,15 +45,15 @@ public class ShoppingCartServlet extends HttpServlet {
 
                 while (rs.next()) {
                     int productId = rs.getInt("product_id");
-                    ProductDTO product = getProductById(productId);  // Fetch product details
+                    ProductDTO product = getProductById(productId);
                     int quantity = rs.getInt("quantity");
-                    BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));  // Multiply using BigDecimal
+                    BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
                     CartDTO cartItem = new CartDTO(
                             rs.getInt("id"),
                             userId,
                             product,
                             quantity,
-                            totalPrice  // Set the total price as BigDecimal
+                            totalPrice
                     );
                     cartItems.add(cartItem);
                 }
@@ -66,10 +66,8 @@ public class ShoppingCartServlet extends HttpServlet {
             return;
         }
 
-        // Set the cartItems in the session to persist the cart data
         session.setAttribute("cart", cartItems);
 
-        // Forward to the shopping cart page
         req.setAttribute("cartItems", cartItems);
         RequestDispatcher rd = req.getRequestDispatcher("shoppingCart.jsp");
         rd.forward(req, resp);
@@ -104,7 +102,6 @@ public class ShoppingCartServlet extends HttpServlet {
                 removeProductFromCart(connection, cartId);
             }
 
-            // After performing the cart operation, reload the cart and update the session
             List<CartDTO> updatedCartItems = getCartItemsFromDatabase(connection, userId);
             session.setAttribute("cart", updatedCartItems);
 
@@ -116,7 +113,6 @@ public class ShoppingCartServlet extends HttpServlet {
             return;
         }
 
-        // Redirect to refresh the page with the updated cart
         resp.sendRedirect("shoppingCart");
     }
 
@@ -129,15 +125,15 @@ public class ShoppingCartServlet extends HttpServlet {
 
             while (rs.next()) {
                 int productId = rs.getInt("product_id");
-                ProductDTO product = getProductById(productId);  // Fetch product details
+                ProductDTO product = getProductById(productId);
                 int quantity = rs.getInt("quantity");
-                BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));  // Multiply using BigDecimal
+                BigDecimal totalPrice = product.getPrice().multiply(BigDecimal.valueOf(quantity));
                 CartDTO cartItem = new CartDTO(
                         rs.getInt("id"),
                         userId,
                         product,
                         quantity,
-                        totalPrice  // Set the total price as BigDecimal
+                        totalPrice
                 );
                 cartItems.add(cartItem);
             }
@@ -157,7 +153,7 @@ public class ShoppingCartServlet extends HttpServlet {
                     product = new ProductDTO(
                             rs.getInt("id"),
                             rs.getString("name"),
-                            rs.getBigDecimal("price")  // Use BigDecimal for price
+                            rs.getBigDecimal("price")
                     );
                 }
             }

@@ -71,7 +71,7 @@
         .navbar li .dropdown-content {
             display: none;
             position: absolute;
-            background-color: inherit; /* Matches navbar background */
+            background-color: inherit;
             min-width: 160px;
             box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
             z-index: 1;
@@ -86,16 +86,13 @@
         }
 
         .navbar li:hover .dropdown-content {
-            display: block; /* Show dropdown on hover */
+            display: block;
         }
 
-        /* Hover Effects */
         .navbar li a:hover {
-            /* Retain hover effects from your existing CSS */
         }
 
         .navbar li .dropdown-content a:hover {
-            /* Ensure the dropdown links have a hover effect */
         }
 
         #menu-icon {

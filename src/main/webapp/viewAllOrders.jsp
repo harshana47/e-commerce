@@ -19,7 +19,7 @@
         <thead>
         <tr>
             <th>Order ID</th>
-            <th>User ID</th> <!-- Added User ID column -->
+            <th>User ID</th>
             <th>Product ID</th>
             <th>Quantity</th>
             <th>Price</th>
@@ -32,7 +32,7 @@
         <% for (OrderDetailDTO orderDetail : orderDetails) { %>
         <tr>
             <td><%= orderDetail.getOrderId() %></td>
-            <td><%= orderDetail.getUserId() %></td> <!-- Display the user_id -->
+            <td><%= orderDetail.getUserId() %></td>
             <td><%= orderDetail.getProductId() %></td>
             <td><%= orderDetail.getQuantity() %></td>
             <td><%= orderDetail.getPrice() %></td>
@@ -42,7 +42,7 @@
         <% } %>
         <% } else { %>
         <tr>
-            <td colspan="7" class="text-center">No order details found.</td> <!-- Adjust colspan -->
+            <td colspan="7" class="text-center">No order details found.</td>
         </tr>
         <% } %>
         </tbody>

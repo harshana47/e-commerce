@@ -27,7 +27,7 @@ public class UserProfileServlet extends HttpServlet {
         Integer userId = (Integer) session.getAttribute("userId");
 
         if (userId == null) {
-            response.sendRedirect("login.jsp"); // Redirect to login if user is not logged in
+            response.sendRedirect("login.jsp");
             return;
         }
 
@@ -57,7 +57,7 @@ public class UserProfileServlet extends HttpServlet {
         Integer userId = (Integer) session.getAttribute("userId");
 
         if (userId == null) {
-            response.sendRedirect("login.jsp"); // Redirect to login if user is not logged in
+            response.sendRedirect("login.jsp");
             return;
         }
 
@@ -74,7 +74,6 @@ public class UserProfileServlet extends HttpServlet {
         }
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-            // Verify current password
             String verifyPasswordSql = "SELECT password FROM users WHERE id = ?";
             PreparedStatement verifyStmt = connection.prepareStatement(verifyPasswordSql);
             verifyStmt.setInt(1, userId);
@@ -83,7 +82,6 @@ public class UserProfileServlet extends HttpServlet {
             if (resultSet.next()) {
                 String storedHashedPassword = resultSet.getString("password");
 
-                // Compare hashed password with the current password
                 if (!BCrypt.checkpw(currentPassword, storedHashedPassword)) {
                     request.setAttribute("error", "Current password is incorrect.");
                     doGet(request, response);
@@ -91,10 +89,8 @@ public class UserProfileServlet extends HttpServlet {
                 }
             }
 
-            // Hash the new password
             String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
-            // Update user details
             String updateSql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
             PreparedStatement updateStmt = connection.prepareStatement(updateSql);
             updateStmt.setString(1, username);

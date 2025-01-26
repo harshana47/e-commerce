@@ -8,9 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Place Order</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -33,7 +31,6 @@
 <div class="container">
     <h2>Review Your Order</h2>
 
-    <!-- Order Form -->
     <form action="placeOrder" method="POST">
         <div class="order-summary">
             <table class="table table-bordered">
@@ -56,7 +53,6 @@
                     <td><%= cartItem.getProduct().getPrice() %></td>
                     <td><%= cartItem.getTotalPrice() %></td>
                 </tr>
-                <!-- Hidden Inputs for each cart item, outside the table -->
                 <input type="hidden" name="productId_<%= cartItem.getProduct().getId() %>" value="<%= cartItem.getProduct().getId() %>">
                 <input type="hidden" name="quantity_<%= cartItem.getProduct().getId() %>" value="<%= cartItem.getQuantity() %>">
                 <input type="hidden" name="price_<%= cartItem.getProduct().getId() %>" value="<%= cartItem.getProduct().getPrice() %>">
@@ -64,18 +60,15 @@
                 </tbody>
             </table>
 
-            <!-- Total Amount -->
             <div class="total-amount">
                 <p><strong>Total Amount: </strong><%= request.getAttribute("totalAmount") %></p>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary btn-submit">Place Order</button>
         </div>
     </form>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function () {
-            // Check if the order was placed successfully
             <% if (request.getAttribute("orderPlaced") != null && (Boolean) request.getAttribute("orderPlaced")) { %>
             Swal.fire({
                 title: 'Order Placed Successfully!',
@@ -85,7 +78,6 @@
             });
             <% } %>
 
-            // Check if the order failed
             <% if (request.getAttribute("orderFailed") != null && (Boolean) request.getAttribute("orderFailed")) { %>
             Swal.fire({
                 title: 'Oops!',

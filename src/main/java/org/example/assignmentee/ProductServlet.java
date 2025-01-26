@@ -31,7 +31,6 @@ public class ProductServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-            // Fetch categories
             String categorySql = "SELECT * FROM categories";
             Statement categoryStatement = connection.createStatement();
             ResultSet categoryResultSet = categoryStatement.executeQuery(categorySql);
@@ -44,8 +43,7 @@ public class ProductServlet extends HttpServlet {
                 );
                 categoryList.add(category);
 
-                // Fetch products for each category using the correct column name 'category_id'
-                String productSql = "SELECT * FROM products WHERE category_id = ?";  // Updated column name
+                String productSql = "SELECT * FROM products WHERE category_id = ?";
                 PreparedStatement productStatement = connection.prepareStatement(productSql);
                 productStatement.setInt(1, category.getId());
                 ResultSet productResultSet = productStatement.executeQuery();
@@ -58,8 +56,8 @@ public class ProductServlet extends HttpServlet {
                             productResultSet.getString("description"),
                             productResultSet.getBigDecimal("price"),
                             productResultSet.getInt("stock"),
-                            productResultSet.getInt("category_id"),  // Updated column name
-                            productResultSet.getString("image_path") // Fetching the image path from the database
+                            productResultSet.getInt("category_id"),
+                            productResultSet.getString("image_path")
                     );
                     productList.add(product);
                 }
