@@ -260,7 +260,7 @@
 </head>
 <body>
 <header>
-    <a href="#" class="logo">Chef</a>
+    <a href="#" class="logo">Lusty Bites</a>
     <i class='bx bx-menu' id="menu-icon"></i>
 
     <ul class="navbar">

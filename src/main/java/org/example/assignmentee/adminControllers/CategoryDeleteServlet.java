@@ -31,7 +31,7 @@ public class CategoryDeleteServlet extends HttpServlet {
                     int rowsAffected = preparedStatement.executeUpdate();
 
                     if (rowsAffected > 0) {
-                        response.sendRedirect("adminHome.jsp?message=Category deleted successfully");
+                        response.sendRedirect("index?message=Category deleted successfully");
                     } else {
                         response.sendRedirect("adminHome.jsp?message=Category not found");
                     }

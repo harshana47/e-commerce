@@ -41,7 +41,8 @@
             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
         </div>
         <button type="submit" class="btn btn-primary">Update Profile</button>
-        <a href="dashboard.jsp" class="btn btn-secondary">Cancel</a>
+        <a href="productBrowsing" class="btn btn-secondary">Back</a>
+        <!-- Back button -->
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

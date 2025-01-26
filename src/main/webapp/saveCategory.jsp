@@ -26,7 +26,6 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-success" name="action" value="save">Save</button>
-                    <button type="submit" class="btn btn-primary" name="action" value="update">Update</button>
                     <a href="adminHome.jsp" class="btn btn-secondary">Back</a>
                 </div>
             </form>
