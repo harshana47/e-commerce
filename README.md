@@ -32,7 +32,8 @@ This project is a user-friendly food ordering and management system built to mak
 This project is built to connect customers and admins in a way that’s both practical and efficient. Whether it’s ordering food or managing the system, it’s all designed to be as straightforward and user-friendly as possible.
 
 
-Youtube video demonstration - https://youtu.be/B4JzGsAJFtA?si=cHbFIDpe1EAnWuZS
+## Youtube video demonstration 
+Link - https://youtu.be/B4JzGsAJFtA?si=cHbFIDpe1EAnWuZS
 
 
 ![image alt](https://github.com/harshana47/e-commerce/blob/38af20eef1cf90a6dafae6074f2821f65c76e242/admin1.png)
