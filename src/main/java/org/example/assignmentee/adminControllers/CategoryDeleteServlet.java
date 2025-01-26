@@ -22,7 +22,7 @@ public class CategoryDeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id"); // Get the category ID from the request
+        String id = request.getParameter("id");
 
         if (id != null) {
             try (Connection connection = dataSource.getConnection()) {
