@@ -279,6 +279,9 @@
                             <p class="price">$<%= product.getPrice() %></p>
                         </div>
                         <div class="card-footer text-center">
+                            <% if (product.getStock() == 0) { %>  <!-- Check if stock is 0 -->
+                            <span class="badge bg-danger">Sold Out</span> <!-- Display Sold Out -->
+                            <% } else { %>
                             <form method="post" action="productBrowsing">
                                 <input type="hidden" name="productId" value="<%= product.getId() %>">
                                 <input type="hidden" name="userId" value="1">
@@ -287,6 +290,7 @@
                                 </div>
                                 <button type="submit" class="btn btn-success">Add to Cart</button>
                             </form>
+                            <% } %>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-package org.example.assignmentee;
+package org.example.assignmentee.customerControllers;
 
 import DTO.CartDTO;
 import DTO.ProductDTO;

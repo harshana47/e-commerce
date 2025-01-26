@@ -1,4 +1,4 @@
-package org.example.assignmentee;
+package org.example.assignmentee.customerControllers;
 
 import DTO.ProductDTO;
 import jakarta.annotation.Resource;
@@ -8,7 +8,6 @@ import jakarta.servlet.annotation.*;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.*;
 

@@ -1,4 +1,4 @@
-package org.example.assignmentee;
+package org.example.assignmentee.adminControllers;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;

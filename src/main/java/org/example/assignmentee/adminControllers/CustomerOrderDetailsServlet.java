@@ -1,4 +1,4 @@
-package org.example.assignmentee;
+package org.example.assignmentee.adminControllers;
 
 import DTO.OrderDetailDTO;
 import jakarta.annotation.Resource;
