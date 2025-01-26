@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
-        String query = "SELECT id, username, password FROM users WHERE email = ?";
+        String query = "SELECT id, username, password, status FROM users WHERE email = ?";
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -46,20 +46,28 @@ public class LoginServlet extends HttpServlet {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
+                String status = resultSet.getString("status");
+
+                // Check if user status is 'Inactive'
+                if ("Inactive".equalsIgnoreCase(status)) {
+                    request.setAttribute("errorMessage", "Your account is inactive. Please contact support.");
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                    return;
+                }
+
                 int userId = resultSet.getInt("id");
                 String username = resultSet.getString("username");
                 String hashedPassword = resultSet.getString("password");
-                HttpSession session = request.getSession();
 
                 if (BCrypt.checkpw(password, hashedPassword)) {
+                    HttpSession session = request.getSession();
                     session.setAttribute("userId", userId);
                     session.setAttribute("username", username);  // Storing username in session
-                    session.setAttribute("isLoggedIn", true); // Set login status
-                    response.sendRedirect("productBrowsing");  // Redirect to home page after login
+                    session.setAttribute("isLoggedIn", true);    // Set login status
+                    response.sendRedirect("productBrowsing");   // Redirect to home page after login
                 } else {
                     request.setAttribute("errorMessage", "Invalid email or password.");
                     request.getRequestDispatcher("login.jsp").forward(request, response);
-                    session.invalidate();
                 }
             } else {
                 request.setAttribute("errorMessage", "Invalid email or password.");
