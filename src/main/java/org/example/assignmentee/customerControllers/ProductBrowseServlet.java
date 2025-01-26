@@ -80,7 +80,7 @@ public class ProductBrowseServlet extends HttpServlet {
                         product.setPrice(rs.getBigDecimal("price"));
                         product.setStock(rs.getInt("stock"));
                         product.setCategoryId(rs.getInt("category_id"));
-                        product.setImagePath(rs.getString("image_path")); // Set image path
+                        product.setImagePath(rs.getString("image_path"));
                         products.add(product);
                     }
                 }

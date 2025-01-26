@@ -27,7 +27,7 @@ public class PlaceOrderServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("userId");
-        System.out.println("User ID from session: " + userId);  // Log user ID
+        System.out.println("User ID from session: " + userId);
 
 
         if (userId == null) {
@@ -37,8 +37,7 @@ public class PlaceOrderServlet extends HttpServlet {
         }
 
         List<CartDTO> cartItems = (List<CartDTO>) session.getAttribute("cart");
-        System.out.println("Cart Items: " + (cartItems != null ? cartItems.size() : 0));  // Log cart items count
-
+        System.out.println("Cart Items: " + (cartItems != null ? cartItems.size() : 0));
 
         if (cartItems == null || cartItems.isEmpty()) {
             System.out.println("Cart is empty, redirecting to error page.");
