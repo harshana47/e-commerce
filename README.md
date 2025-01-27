@@ -33,8 +33,7 @@ This project is built to connect customers and admins in a way that’s both pra
 
 
 ## Youtube video demonstration 
-Link - https://youtu.be/B4JzGsAJFtA?si=cHbFIDpe1EAnWuZS
-
+Link - https://youtu.be/IL0_myiY1_E?si=tnA56j-7LbNIK4SH
 
 ![image alt](https://github.com/harshana47/e-commerce/blob/38af20eef1cf90a6dafae6074f2821f65c76e242/admin1.png)
 ![image alt](https://github.com/harshana47/e-commerce/blob/b0f587467e35a2ad71010cd7940ced8f03ae46e7/admin2.png)
